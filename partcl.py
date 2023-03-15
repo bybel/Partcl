@@ -86,25 +86,27 @@ def update_particles():
                         other.die()
                     elif(other.type == regime.HERBIVORE and particle.type == regime.CARNIVORE):
                         particle.size += other.size
-                        tmp = particle.velocity
-                        particle.velocity = other.velocity 
-                        other.velocity = tmp
-                        
                         other.die()
                     elif(other.type == regime.CARNIVORE and particle.type == regime.HERBIVORE):
                         if other.size > particle.size:
                             particle.die()
                             other.velocity += -other.velocity * 0.7
                             other.size += particle.size
-                        tmp = particle.velocity
-                        particle.velocity = other.velocity 
-                        other.velocity = tmp
-                        
                     elif(other.type == regime.CARNIVORE and particle.type == regime.CARNIVORE):
                         if(particle.size > WIDTH/4):
                             other.die()
                             particle.velocity += -particle.velocity * 0.7
                             particle.size += other.size
+                            
+                    tmp = particle.velocity
+                    particle.velocity = other.velocity 
+                    other.velocity = tmp
+                    
+                    if distance < particle.size + other.size:
+                        dl.scale_to_length(particle.size + other.size)
+                        particle.position = other.position - dl
+                        other.position = particle.position + dl
+                        
                 
                 
                 
@@ -209,7 +211,7 @@ def main():
         # Update the particles
         update_particles()
 
-        pygame.time.delay(10)
+        pygame.time.delay(5)
 
         # Clear the screen
         screen.fill(rand_ass_cola)
